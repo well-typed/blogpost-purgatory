@@ -1,9 +1,5 @@
 packages: haskell-wrapper
 
--- TODO: How do we avoid this absolute path?
-package haskell-wrapper 
-  extra-lib-dirs: /home/edsko/wt/clients/be/opensource/blogpost/rust-wrapper/target/debug
-
 source-repository-package
   type: git
   location: git@github.com:BeFunctional/haskell-foreign-rust.git

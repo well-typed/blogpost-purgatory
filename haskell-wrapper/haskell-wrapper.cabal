@@ -38,8 +38,6 @@ library
       c2hs:c2hs
   include-dirs:
       cbits
-  extra-libraries:
-      rust_wrapper
 
 executable demo
   import:
@@ -50,3 +48,5 @@ executable demo
       demo
   build-depends:
       haskell-wrapper
+  pkgconfig-depends:
+      rust-wrapper

@@ -1,0 +1,5 @@
+Name: rust-wrapper
+Description: Rust-side library for the "Calling Purgatory from Heaven" demonstration
+Version: 0.1.0
+
+Libs: -L/home/edsko/wt/clients/be/opensource/blogpost/rust-wrapper/target/debug -lrust_wrapper
