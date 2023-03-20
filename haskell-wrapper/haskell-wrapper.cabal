@@ -1,0 +1,52 @@
+cabal-version:      3.0
+name:               haskell-wrapper
+version:            0.1.0.0
+license:            BSD-3-Clause
+license-file:       LICENSE
+author:             Edsko de Vries
+maintainer:         edsko@well-typed.com
+category:           Network
+build-type:         Simple
+extra-doc-files:    CHANGELOG.md
+
+common lang
+  ghc-options:
+      -Wall
+  build-depends:
+      base >= 4.16
+  default-language:
+      GHC2021
+  default-extensions:
+      DerivingStrategies
+      DerivingVia
+      UndecidableInstances
+
+library
+  import:
+      lang
+  exposed-modules:
+      Certificate
+      C.Certificate
+  hs-source-dirs:
+      src
+  build-depends:
+    , borsh
+    , bytestring
+    , foreign-rust
+    , text
+  build-tool-depends:
+      c2hs:c2hs
+  include-dirs:
+      cbits
+  extra-libraries:
+      rust_wrapper
+
+executable demo
+  import:
+      lang
+  main-is:
+      Main.hs
+  hs-source-dirs:
+      demo
+  build-depends:
+      haskell-wrapper

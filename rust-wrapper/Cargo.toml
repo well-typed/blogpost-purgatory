@@ -1,0 +1,14 @@
+[package]
+name = "rust-wrapper"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+rcgen = "0.10.0"
+rustls = "0.20.8"
+
+haskell-ffi = { git = "https://github.com/BeFunctional/haskell-rust-ffi.git", rev = "c46977354d1d5d7e23fb1f26f81d1c3a5389cc06" }
+
