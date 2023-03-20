@@ -1,15 +1,18 @@
 module C.Certificate (
     Certificate(..)
-  , PrivateKey(..)
-  , selfSigned
+  , SecretKey(..)
+  , genSelfSigned
+  , certificateSubject
   ) where
 
-#include "rust-wrapper.h"
+#include "rust_wrapper.h"
 
 import Codec.Borsh
-import Data.Text (Text)
-import Data.String
 import Data.ByteString qualified as Strict
+import Data.FixedSizeArray (FixedSizeArray)
+import Data.String
+import Data.Text (Text)
+import Data.Word
 
 import Data.Structured qualified as Structured
 import Foreign.Rust.Marshall.Variable
@@ -21,14 +24,21 @@ newtype Certificate = Certificate Strict.ByteString
   deriving newtype (IsRaw)
   deriving (Show, Structured.Show, IsString) via AsBase64 Certificate
 
-newtype PrivateKey = PrivateKey Strict.ByteString
+newtype SecretKey = SecretKey (FixedSizeArray 32 Word8)
   deriving newtype (BorshSize, ToBorsh, FromBorsh)
   deriving newtype (IsRaw)
-  deriving (Show, Structured.Show, IsString) via AsBase64 PrivateKey
+  deriving (Show, Structured.Show, IsString) via AsBase64 SecretKey
 
-{# fun unsafe rust_wrapper_rcgen_generate_simple_self_signed as selfSigned
+{# fun unsafe rust_wrapper_generate_simple_self_signed as genSelfSigned
      { toBorshVar*  `[Text]'&
-     , getVarBuffer `Buffer (Either Text (Certificate, PrivateKey))'&
+     , getVarBuffer `Buffer (Either Text (Certificate, SecretKey))'&
+     }
+  -> `()'
+#}
+
+{# fun unsafe rust_wrapper_get_certificate_subject as certificateSubject
+     { toBorshVar*  `Certificate'&
+     , getVarBuffer `Buffer Text'&
      }
   -> `()'
 #}

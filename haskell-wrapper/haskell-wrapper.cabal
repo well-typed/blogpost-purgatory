@@ -17,6 +17,7 @@ common lang
   default-language:
       GHC2021
   default-extensions:
+      DataKinds
       DerivingStrategies
       DerivingVia
       UndecidableInstances
@@ -38,6 +39,8 @@ library
       c2hs:c2hs
   include-dirs:
       cbits
+  pkgconfig-depends:
+      rust_wrapper-uninstalled
 
 executable demo
   import:
@@ -47,6 +50,7 @@ executable demo
   hs-source-dirs:
       demo
   build-depends:
-      haskell-wrapper
+    , haskell-wrapper
+    , foreign-rust
   pkgconfig-depends:
-      rust-wrapper
+      rust_wrapper-uninstalled
