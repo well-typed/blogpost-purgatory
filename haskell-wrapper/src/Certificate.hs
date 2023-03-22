@@ -3,6 +3,7 @@ module Certificate (
   , C.SecretKey  -- opaque
   , genSelfSigned
   , certificateSubject
+  , C.exampleKey
   ) where
 
 import Data.Text (Text)

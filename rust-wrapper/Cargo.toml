@@ -10,6 +10,7 @@ capi = []
 der       = "0.7"
 p256      = "0.13"
 pkcs8     = { version = "0.10", features = ["std"] }
+rand      = "0.8"
 rcgen     = "0.10"
 x509-cert = "0.2"
 

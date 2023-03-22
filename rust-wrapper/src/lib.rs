@@ -3,10 +3,13 @@ use std::{io::Write, marker::PhantomData};
 use haskell_ffi::{
     error::Result,
     from_haskell::marshall_from_haskell_var,
-    to_haskell::{marshall_result_to_haskell_var, marshall_to_haskell_var},
-    FromHaskell, ToHaskell,
+    to_haskell::{
+        marshall_result_to_haskell_var, marshall_to_haskell_fixed, marshall_to_haskell_var,
+    },
+    FromHaskell, HaskellSize, ToHaskell,
 };
 use p256::{FieldBytes, SecretKey};
+use rand::{rngs::StdRng, SeedableRng};
 use x509_cert::Certificate;
 
 /*******************************************************************************
@@ -42,6 +45,12 @@ impl ToHaskell<RW> for SecretKey {
         let bytes: FieldBytes = self.to_bytes();
         let array: &[u8; 32] = bytes.as_ref();
         array.to_haskell(writer, tag)
+    }
+}
+
+impl HaskellSize<RW> for SecretKey {
+    fn haskell_size(_tag: PhantomData<RW>) -> usize {
+        32
     }
 }
 
@@ -86,4 +95,11 @@ pub extern "C" fn rust_wrapper_get_certificate_subject(
     let cert: Certificate = marshall_from_haskell_var(cert, cert_len, RW);
     let result = format!("{}", cert.tbs_certificate.subject);
     marshall_to_haskell_var(&result, out, out_len, RW);
+}
+
+#[no_mangle]
+pub extern "C" fn rust_wrapper_example_key(seed: u64, out: *mut u8, out_len: usize) {
+    let mut prng: StdRng = StdRng::seed_from_u64(seed);
+    let result: SecretKey = SecretKey::random(&mut prng);
+    marshall_to_haskell_fixed(&result, out, out_len, RW);
 }

@@ -3,6 +3,7 @@ module C.Certificate (
   , SecretKey(..)
   , genSelfSigned
   , certificateSubject
+  , exampleKey
   ) where
 
 #include "rust_wrapper.h"
@@ -15,6 +16,7 @@ import Data.Text (Text)
 import Data.Word
 
 import Data.Structured qualified as Structured
+import Foreign.Rust.Marshall.Fixed
 import Foreign.Rust.Marshall.Variable
 import Foreign.Rust.Serialisation.Raw
 import Foreign.Rust.Serialisation.Raw.Base64
@@ -39,6 +41,13 @@ newtype SecretKey = SecretKey (FixedSizeArray 32 Word8)
 {# fun unsafe rust_wrapper_get_certificate_subject as certificateSubject
      { toBorshVar*  `Certificate'&
      , getVarBuffer `Buffer Text'&
+     }
+  -> `()'
+#}
+
+{# fun pure unsafe rust_wrapper_example_key as exampleKey
+     {                   `Word64'
+     , allocFixedBuffer- `SecretKey'& fromBorshFixed*
      }
   -> `()'
 #}
