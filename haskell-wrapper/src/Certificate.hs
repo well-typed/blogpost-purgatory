@@ -1,6 +1,8 @@
+{-# OPTIONS_GHC -Wno-orphans #-}
+
 module Certificate (
-    C.Certificate -- opaque
-  , C.SecretKey  -- opaque
+    Certificate -- opaque
+  , SecretKey  -- opaque
   , genSelfSigned
   , certificateSubject
   , C.exampleKey
@@ -13,17 +15,38 @@ import Data.Text (Text)
 import Foreign.Rust.Failure
 import Foreign.Rust.Marshall.Variable
 
+import C.Certificate (Certificate, SecretKey)
 import C.Certificate qualified as C
+import Data.Annotated
 
 -- | Generate new self-signed certificate
-genSelfSigned :: [Text] -> IO (C.Certificate, C.SecretKey)
+genSelfSigned :: [Text] -> IO (Certificate, SecretKey)
 -- The use of 'throwFailureIO' here is justified because 'genSelfSigned' will
 -- never generate an invalid certificate.
 genSelfSigned = (>>= throwFailureIO) . withBorshFailure . C.genSelfSigned
 
 -- | Certificate subject
-certificateSubject :: C.Certificate -> Text
+certificateSubject :: Certificate -> Text
 certificateSubject = withPureBorshVarBuffer . C.certificateSubject
 
-toPem :: C.SecretKey -> Text
+toPem :: SecretKey -> Text
 toPem = withPureBorshVarBuffer . C.toPem
+
+{-------------------------------------------------------------------------------
+  Annotating 'Certificate'
+-------------------------------------------------------------------------------}
+
+deriving
+  via PairWithAnnotation Certificate
+  instance CanAnnotate Certificate
+
+type instance Annotation Certificate = Text
+
+instance ComputeAnnotation Certificate where
+  computeAnnotation = certificateSubject
+
+
+-- > data A = ..
+-- >   deriving CanAnnotate via PairWithAnnotation A
+
+--instance CanAnnotate Certificate where

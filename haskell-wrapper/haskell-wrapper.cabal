@@ -20,6 +20,7 @@ common lang
       DataKinds
       DerivingStrategies
       DerivingVia
+      TypeFamilies
       UndecidableInstances
 
 library
