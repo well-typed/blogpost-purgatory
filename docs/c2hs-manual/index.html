@@ -1,0 +1,53 @@
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1"><title>The Binding Generator C&#10132;Haskell</title><link rel="stylesheet" type="text/css" href="c2hs.css"><meta name="generator" content="DocBook XSL Stylesheets Vsnapshot"><link rel="home" href="index.html" title="The Binding Generator C&#10132;Haskell"><link rel="next" href="usage.html" title="Usage of C&#10132;Haskell"></head><body bgcolor="white" text="black" link="#0000FF" vlink="#840084" alink="#0000FF"><div class="navheader"><table width="100%" summary="Navigation header"><tr><th colspan="3" align="center">The Binding Generator C&#10132;Haskell</th></tr><tr><td width="20%" align="left"> </td><th width="60%" align="center"> </th><td width="20%" align="right"> <a accesskey="n" href="usage.html">Next</a></td></tr></table><hr></div><div class="article"><div class="titlepage"><div><div><h2 class="title"><a name="idm1"></a>The Binding Generator C&#10132;Haskell</h2></div><div><div class="authorgroup"><div class="author"><h3 class="author"><span class="firstname">Manuel</span> <span class="surname">Chakravarty</span></h3><code class="email">&lt;<a class="email" href="mailto:chak@cse.unsw.edu.au">chak@cse.unsw.edu.au</a>&gt;</code></div></div></div><div><p class="pubdate">November 2007</p></div></div><hr></div><div class="toc"><p><b>Table of Contents</b></p><dl class="toc"><dt><span class="sect1"><a href="index.html#installation">Installation</a></span></dt><dd><dl><dt><span class="sect2"><a href="index.html#idm19">Where is the Source?</a></span></dt><dt><span class="sect2"><a href="index.html#idm23">What Else Do I Need?</a></span></dt><dt><span class="sect2"><a href="index.html#idm32">I Got Everything, and Now?</a></span></dt></dl></dd><dt><span class="sect1"><a href="usage.html">Usage of C&#10132;Haskell</a></span></dt><dd><dl><dt><span class="sect2"><a href="usage.html#idm46">Usage of <span class="command"><strong>c2hs</strong></span></a></span></dt><dt><span class="sect2"><a href="usage.html#idm104">Compilation of a Generated Haskell API</a></span></dt></dl></dd><dt><span class="sect1"><a href="implementing.html">Implementation of Haskell Binding Modules</a></span></dt><dd><dl><dt><span class="sect2"><a href="implementing.html#import">Import Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm133">Context Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm149">Type Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm156">Sizeof Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm164">Enumeration Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm196"><code class="literal">enum define</code> hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm218">Call Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm235">Function Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm336">Get Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm364">Set Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm370">Pointer Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm430">Class Hooks</a></span></dt><dt><span class="sect2"><a href="implementing.html#cpp">CPP Directives and Inline C Code</a></span></dt><dt><span class="sect2"><a href="implementing.html#idm476">Grammar Rules</a></span></dt></dl></dd><dt><span class="sect1"><a href="bugs.html">Bug Reports and Suggestions</a></span></dt><dt><span class="sect1"><a href="copyright.html">Copyright</a></span></dt><dd><dl><dt><span class="sect2"><a href="copyright.html#idm491">C&#10132;Haskell License</a></span></dt><dt><span class="sect2"><a href="copyright.html#idm495">Documentation License</a></span></dt><dt><span class="sect2"><a href="copyright.html#idm499">Possible Licenses of Generated Code</a></span></dt></dl></dd><dt><span class="sect1"><a href="gfdl.html">GNU Free Documentation License</a></span></dt><dt><span class="sect1"><a href="release-notes.html">Release Notes</a></span></dt><dd><dl><dt><span class="sect2"><a href="release-notes.html#idm509">Version 0.15.1 "Rainy Days"</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm531">Version 0.14.5 "Travelling Lightly"</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm558">Version 0.13.6 "Pressing Forward"</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm582">Version 0.12.1 "Springtime"</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm594">Version 0.11.5 "Powder Snow"</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm621">Version 0.10.17 "Altocumulus Stratiformis Perlucidus Undulatus"
+    </a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm654">Version 0.9.9 "Blue Ginger"</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm683">Version 0.8.2 "Gentle Moon"</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm699">Version 0.8.1 "Gentle Moon"</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm707">Version 0.7.10 "Afterthought"</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm719">Version 0.7.9 "Afterthought"</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm729">Version 0.7.8</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm736">Version 0.7.7</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm740">Version 0.7.6</a></span></dt><dt><span class="sect2"><a href="release-notes.html#idm744">Version 0.7.5</a></span></dt></dl></dd></dl></div><div class="abstract"><p class="title"><b>Abstract</b></p><p>
+  C&#10132;Haskell is an interface generator that simplifies the development of
+  <a class="ulink" href="http://haskell.org" target="_top">Haskell</a> bindings to C libraries.  The
+  tool processes existing C header files that determine data layout and function
+  signatures on the C side in conjunction with Haskell modules that specify
+  Haskell-side type signatures and marshaling details.  Hooks embedded in the
+  Haskell code signal access to C structures and functions -- they are expanded
+  by the interfacing tool in dependence on information from the corresponding C
+  header file.  Another noteworthy property is the lightweight nature of the
+  approach.
+  </p></div><p>
+More background information is available in a research paper discussing
+C&#10132;Haskell, which is at
+<a class="ulink" href="http://www.cse.unsw.edu.au/~chak/papers/papers.html#c2hs" target="_top">http://www.cse.unsw.edu.au/~chak/papers/papers.html#c2hs</a>.
+However, this paper does not cover the more recent advanced features such as
+function hooks and conditional compilation.
+</p><div class="sect1"><div class="titlepage"><div><div><h2 class="title" style="clear: both"><a name="installation"></a>Installation</h2></div></div></div><p>
+  It follows a brief discussion of the installation from source.  There is,
+  however, a file <code class="filename">INSTALL</code> in the source distribution, which is
+  more frequently updated and should be consulted in any case.
+  </p><div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="idm19"></a>Where is the Source?</h3></div></div></div><p>
+    The master site of C&#10132;Haskell is at
+    <a class="ulink" href="http://www.cse.unsw.edu.au/~chak/haskell/c2hs/" target="_top">http://www.cse.unsw.edu.au/~chak/haskell/c2hs/</a>.  It has all the
+    latest information and sources.  Furthermore, it explains how to get access to
+    the C&#10132;Haskell Darcs repository and has references to pre-compiled binaries.
+    </p></div><div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="idm23"></a>What Else Do I Need?</h3></div></div></div><p>
+    You need a Haskell system supported by C&#10132;Haskell. Currently, this is only
+    the <em class="firstterm">Glasgow Haskell Compiler (GHC)</em>, which you can obtain
+    from <a class="ulink" href="http://haskell.org/ghc/" target="_top">http://haskell.org/ghc/</a>.  Furthermore, you need the Haskell
+    package system Cabal. See the <code class="filename">INSTALL</code> file for details on
+    supported versions.
+    </p><p>
+    To build the documentation, you will also need the <em class="firstterm">SGML
+    Tools</em>, which you find at your nearest sunsite or Linux mirror or at
+    <a class="ulink" href="ftp://ftp.lip6.fr/pub/sgml-tools/" target="_top">ftp://ftp.lip6.fr/pub/sgml-tools/</a>.  On an up-to-date Linux
+    system, the tools are probably already installed.
+    </p></div><div class="sect2"><div class="titlepage"><div><div><h3 class="title"><a name="idm32"></a>I Got Everything, and Now?</h3></div></div></div><p>
+    The short answer is
+</p><pre class="screen">
+$ tar -xzf <em class="replaceable"><code>package</code></em>.tar.gz      # unpack the sources
+$ cd <em class="replaceable"><code>package</code></em>                   # change to the toplevel directory
+$ runghc Setup.hs configure    # configure the build system
+$ runghc Setup.hs build        # build everything
+[ Become root if necessary ]
+$ runghc Setup.hs install      # install c2hs
+</pre><p>
+    </p><p>
+    In the <code class="filename">INSTALL</code> file, there are more details.
+    </p><p>
+    Optionally, you can build the documentation by issuing <strong class="userinput"><code>make
+    doc</code></strong> and install it with <strong class="userinput"><code>make install-doc</code></strong>.
+    </p></div></div></div><div class="navfooter"><hr><table width="100%" summary="Navigation footer"><tr><td width="40%" align="left"> </td><td width="20%" align="center"> </td><td width="40%" align="right"> <a accesskey="n" href="usage.html">Next</a></td></tr><tr><td width="40%" align="left" valign="top"> </td><td width="20%" align="center"> </td><td width="40%" align="right" valign="top"> Usage of C&#10132;Haskell</td></tr></table></div></body></html>
