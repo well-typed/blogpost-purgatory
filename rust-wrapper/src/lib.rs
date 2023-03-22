@@ -1,4 +1,9 @@
-use std::{io::Write, marker::PhantomData, ops::Deref};
+use std::{
+    io::Write,
+    marker::PhantomData,
+    ops::Deref,
+    sync::atomic::{AtomicUsize, Ordering},
+};
 
 use elliptic_curve::generic_array::GenericArray;
 use haskell_ffi::{
@@ -148,4 +153,65 @@ pub extern "C" fn rust_wrapper_key_from_pem(
         Err(elliptic_curve::Error) => None,
     };
     marshall_to_haskell_max(&result, out, out_len, RW);
+}
+
+/*******************************************************************************
+  Avoiding marshalling: infra
+*******************************************************************************/
+
+#[derive(Debug)]
+pub struct Handle(usize);
+
+impl Drop for Handle {
+    fn drop(&mut self) {
+        println!("Dropping {:?}", self);
+    }
+}
+
+pub fn new_handle() -> Handle {
+    static COUNTER: AtomicUsize = AtomicUsize::new(0);
+    let handle_id = COUNTER.fetch_add(1, Ordering::Relaxed);
+    Handle(handle_id)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    // Run with
+    //
+    // ```
+    // cargo test -- --nocapture
+    // ```
+    //
+    // to see the output
+    fn test_new_drop() {
+        println!("Testing creating and dropping handles");
+        let h1: Handle = new_handle();
+        let h2: Handle = new_handle();
+        let h3: Handle = new_handle();
+        println!("{:?} {:?} {:?}", h1, h2, h3);
+    }
+}
+
+/*******************************************************************************
+  Avoiding marshalling: external API
+*******************************************************************************/
+
+#[no_mangle]
+pub extern "C" fn rust_wrapper_new_handle() -> *mut Handle {
+    let handle = Box::new(new_handle());
+    Box::<Handle>::into_raw(handle)
+}
+
+#[no_mangle]
+pub extern "C" fn rust_wrapper_handle_id(handle: *mut Handle) -> usize {
+    let handle: &Handle = unsafe { &*handle };
+    handle.0
+}
+
+#[no_mangle]
+pub extern "C" fn rust_wrapper_free_handle(handle: *mut Handle) {
+    let _handle = unsafe { Box::from_raw(handle) };
 }

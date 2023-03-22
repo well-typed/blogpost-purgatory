@@ -28,7 +28,9 @@ library
       lang
   exposed-modules:
       Certificate
+      Handle
       C.Certificate
+      C.Handle
   hs-source-dirs:
       src
   build-depends:
