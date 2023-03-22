@@ -4,6 +4,8 @@ module Certificate (
   , genSelfSigned
   , certificateSubject
   , C.exampleKey
+  , toPem
+  , C.fromPem
   ) where
 
 import Data.Text (Text)
@@ -22,3 +24,6 @@ genSelfSigned = (>>= throwFailureIO) . withBorshFailure . C.genSelfSigned
 -- | Certificate subject
 certificateSubject :: C.Certificate -> Text
 certificateSubject = withPureBorshVarBuffer . C.certificateSubject
+
+toPem :: C.SecretKey -> Text
+toPem = withPureBorshVarBuffer . C.toPem

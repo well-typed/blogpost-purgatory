@@ -4,6 +4,8 @@ module C.Certificate (
   , genSelfSigned
   , certificateSubject
   , exampleKey
+  , toPem
+  , fromPem
   ) where
 
 #include "rust_wrapper.h"
@@ -27,7 +29,7 @@ newtype Certificate = Certificate Strict.ByteString
   deriving (Show, Structured.Show, IsString) via AsBase64 Certificate
 
 newtype SecretKey = SecretKey (FixedSizeArray 32 Word8)
-  deriving newtype (BorshSize, ToBorsh, FromBorsh)
+  deriving newtype (BorshSize, BorshMaxSize, ToBorsh, FromBorsh)
   deriving newtype (IsRaw)
   deriving (Show, Structured.Show, IsString) via AsBase64 SecretKey
 
@@ -47,7 +49,22 @@ newtype SecretKey = SecretKey (FixedSizeArray 32 Word8)
 
 {# fun pure unsafe rust_wrapper_example_key as exampleKey
      {                   `Word64'
-     , allocFixedBuffer- `SecretKey'& fromBorshFixed*
+     , allocFixedBuffer- `SecretKey'& fromBorsh*
      }
   -> `()'
 #}
+
+{# fun unsafe rust_wrapper_key_to_pem as toPem
+     { toBorshFixed* `SecretKey'&
+     , getVarBuffer  `Buffer Text'&
+     }
+  -> `()'
+#}
+
+{# fun pure unsafe rust_wrapper_key_from_pem as fromPem
+     { toBorshVar*     `Text'&
+     , allocMaxBuffer- `Maybe SecretKey'& fromBorsh*
+     }
+  -> `()'
+#}
+

@@ -7,14 +7,15 @@ edition = "2021"
 capi = []
 
 [dependencies]
-der       = "0.7"
-p256      = "0.13"
-pkcs8     = { version = "0.10", features = ["std"] }
-rand      = "0.8"
-rcgen     = "0.10"
-x509-cert = "0.2"
+der            = "0.7"
+elliptic-curve = { version = "0.13", features = ["pem"] }
+p256           = "0.13"
+pkcs8          = { version = "0.10", features = ["std"] }
+rand           = "0.8"
+rcgen          = "0.10"
+x509-cert      = "0.2"
 
-haskell-ffi = { git = "https://github.com/BeFunctional/haskell-rust-ffi.git", rev = "7685f363e2b0fa12e71aee3cebd60036a64df9f5" }
+haskell-ffi = { git = "https://github.com/BeFunctional/haskell-rust-ffi.git", rev = "04f00f547bea452a041f126a2cab0256b7968a61" }
 
 [package.metadata.capi.library]
 versioning = false

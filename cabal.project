@@ -3,4 +3,4 @@ packages: haskell-wrapper
 source-repository-package
   type: git
   location: git@github.com:BeFunctional/haskell-foreign-rust.git
-  tag: f30df93fb5aa106412a7b69071b17da47a9c7dfe
+  tag: dd3eed5940522a7820826df883e6a914d8ddb96f
