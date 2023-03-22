@@ -41,8 +41,6 @@ library
     , text
   build-tool-depends:
       c2hs:c2hs
-  include-dirs:
-      cbits
   pkgconfig-depends:
       rust_wrapper-uninstalled
 
