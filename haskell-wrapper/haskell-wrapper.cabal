@@ -27,10 +27,11 @@ library
   import:
       lang
   exposed-modules:
+      C.Certificate
+      C.GettingStarted
+      C.Handle
       Certificate
       Handle
-      C.Certificate
-      C.Handle
   hs-source-dirs:
       src
   build-depends:

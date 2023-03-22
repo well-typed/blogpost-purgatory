@@ -9,10 +9,15 @@ import Foreign.Rust.Serialisation.Raw
 
 import Certificate
 import Handle
+import C.GettingStarted
 
 main :: IO ()
 main = do
-    putStrLn "# Marshalling\n"
+    putStrLn "\n# Getting started\n"
+
+    print $ rustWrapperAdd 1 2
+
+    putStrLn "\n# Marshalling\n"
 
     (cert, pkey) <- genSelfSigned ["John Smith"]
     print $ cert
