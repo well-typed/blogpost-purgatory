@@ -3,34 +3,31 @@
 module Certificate (
     Certificate -- opaque
   , SecretKey  -- opaque
-  , genSelfSigned
+  , selfSigned
   , certificateSubject
-  , C.exampleKey
+  , exampleKey
   , toPem
-  , C.fromPem
+  , fromPem
   ) where
 
 import Data.Text (Text)
 
-import Foreign.Rust.Failure
-import Foreign.Rust.Marshall.Variable
-
-import C.Certificate (Certificate, SecretKey)
-import C.Certificate qualified as C
 import Data.Annotated
+import Foreign.Rust.Marshall.Variable
+import Foreign.Rust.Failure
+
+import C.Certificate
 
 -- | Generate new self-signed certificate
-genSelfSigned :: [Text] -> IO (Certificate, SecretKey)
--- The use of 'throwFailureIO' here is justified because 'genSelfSigned' will
--- never generate an invalid certificate.
-genSelfSigned = (>>= throwFailureIO) . withBorshFailure . C.genSelfSigned
+selfSigned :: [Text] -> IO (Either Failure (Certificate, SecretKey))
+selfSigned = withBorshFailure . rustWrapperSelfSigned
 
 -- | Certificate subject
 certificateSubject :: Certificate -> Text
-certificateSubject = withPureBorshVarBuffer . C.certificateSubject
+certificateSubject = withPureBorshVarBuffer . rustWrapperCertificateSubject
 
 toPem :: SecretKey -> Text
-toPem = withPureBorshVarBuffer . C.toPem
+toPem = withPureBorshVarBuffer . rustWrapperToPem
 
 {-------------------------------------------------------------------------------
   Annotating 'Certificate'

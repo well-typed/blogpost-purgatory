@@ -1,10 +1,10 @@
 module C.Certificate (
     Certificate(..)
   , SecretKey(..)
-  , genSelfSigned
-  , certificateSubject
+  , rustWrapperSelfSigned
+  , rustWrapperCertificateSubject
   , exampleKey
-  , toPem
+  , rustWrapperToPem
   , fromPem
   ) where
 
@@ -33,14 +33,14 @@ newtype SecretKey = SecretKey (FixedSizeArray 32 Word8)
   deriving newtype (IsRaw)
   deriving (Show, Data.Structured.Show, IsString) via AsBase64 SecretKey
 
-{# fun unsafe rust_wrapper_generate_simple_self_signed as genSelfSigned
+{# fun unsafe rust_wrapper_generate_simple_self_signed as rustWrapperSelfSigned
      { toBorshVar*  `[Text]'&
      , getVarBuffer `Buffer (Either Text (Certificate, SecretKey))'&
      }
   -> `()'
 #}
 
-{# fun unsafe rust_wrapper_get_certificate_subject as certificateSubject
+{# fun unsafe rust_wrapper_get_certificate_subject as rustWrapperCertificateSubject
      { toBorshVar*  `Certificate'&
      , getVarBuffer `Buffer Text'&
      }
@@ -54,7 +54,7 @@ newtype SecretKey = SecretKey (FixedSizeArray 32 Word8)
   -> `()'
 #}
 
-{# fun unsafe rust_wrapper_key_to_pem as toPem
+{# fun unsafe rust_wrapper_key_to_pem as rustWrapperToPem
      { toBorshFixed* `SecretKey'&
      , getVarBuffer  `Buffer Text'&
      }
