@@ -35,7 +35,7 @@ newtype SecretKey = SecretKey (FixedSizeArray 32 Word8)
 
 {# fun unsafe rust_wrapper_generate_simple_self_signed as rustWrapperSelfSigned
      { toBorshVar*  `[Text]'&
-     , getVarBuffer `Buffer (Either Text (Certificate, SecretKey))'&
+     , getVarBuffer `Buffer (Certificate, SecretKey)'&
      }
   -> `()'
 #}

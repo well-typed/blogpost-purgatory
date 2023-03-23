@@ -19,7 +19,7 @@ main = do
 
     putStrLn "\n# Marshalling\n"
 
-    Right (cert, pkey) <- selfSigned ["John Smith"]
+    (cert, pkey) <- selfSigned ["example.com"]
     print $ cert
     print $ annotate cert
     print $ certificateSubject cert

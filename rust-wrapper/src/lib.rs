@@ -10,10 +10,7 @@ use haskell_ffi::{
     error::Result,
     from_haskell::{marshall_from_haskell_fixed, marshall_from_haskell_var},
     haskell_max_size::HaskellMaxSize,
-    to_haskell::{
-        marshall_result_to_haskell_var, marshall_to_haskell_fixed, marshall_to_haskell_max,
-        marshall_to_haskell_var,
-    },
+    to_haskell::{marshall_to_haskell_fixed, marshall_to_haskell_max, marshall_to_haskell_var},
     FromHaskell, HaskellSize, ToHaskell,
 };
 use p256::{FieldBytes, SecretKey};
@@ -90,15 +87,19 @@ impl HaskellMaxSize<RW> for SecretKey {
   The functions that we want to wrap
 *******************************************************************************/
 
-fn generate_simple_self_signed(alt_names: Vec<String>) -> Result<(Certificate, SecretKey)> {
-    let rcgen_cert = rcgen::generate_simple_self_signed(alt_names)?;
-    let der_cert = rcgen_cert.serialize_der()?;
+fn generate_simple_self_signed(alt_names: Vec<String>) -> (Certificate, SecretKey) {
+    // We're okay with a panic if the generation fails
+    let rcgen_cert = rcgen::generate_simple_self_signed(alt_names).unwrap();
+
+    // Since we just generated the certificate, these serialization calls should
+    // never fail.
+    let der_cert = rcgen_cert.serialize_der().unwrap();
     let der_pkey = rcgen_cert.serialize_private_key_der();
 
-    let cert: Certificate = der::Decode::from_der(&der_cert)?;
-    let pkey: SecretKey = pkcs8::DecodePrivateKey::from_pkcs8_der(&der_pkey)?;
+    let cert: Certificate = der::Decode::from_der(&der_cert).unwrap();
+    let pkey: SecretKey = pkcs8::DecodePrivateKey::from_pkcs8_der(&der_pkey).unwrap();
 
-    Ok((cert, pkey))
+    (cert, pkey)
 }
 
 /*******************************************************************************
@@ -114,7 +115,7 @@ pub extern "C" fn rust_wrapper_generate_simple_self_signed(
 ) {
     let alt_names: Vec<String> = marshall_from_haskell_var(alt_names, alt_names_len, RW);
     let result = generate_simple_self_signed(alt_names);
-    marshall_result_to_haskell_var(&result, out, out_len, RW);
+    marshall_to_haskell_var(&result, out, out_len, RW);
 }
 
 #[no_mangle]
