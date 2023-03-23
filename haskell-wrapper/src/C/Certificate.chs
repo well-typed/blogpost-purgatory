@@ -17,7 +17,7 @@ import Data.String
 import Data.Text (Text)
 import Data.Word
 
-import Data.Structured qualified as Structured
+import Data.Structured qualified
 import Foreign.Rust.Marshall.Fixed
 import Foreign.Rust.Marshall.Variable
 import Foreign.Rust.Serialisation.Raw
@@ -26,12 +26,12 @@ import Foreign.Rust.Serialisation.Raw.Base64
 newtype Certificate = Certificate Strict.ByteString
   deriving newtype (BorshSize, ToBorsh, FromBorsh)
   deriving newtype (IsRaw)
-  deriving (Show, Structured.Show, IsString) via AsBase64 Certificate
+  deriving (Show, Data.Structured.Show, IsString) via AsBase64 Certificate
 
 newtype SecretKey = SecretKey (FixedSizeArray 32 Word8)
   deriving newtype (BorshSize, BorshMaxSize, ToBorsh, FromBorsh)
   deriving newtype (IsRaw)
-  deriving (Show, Structured.Show, IsString) via AsBase64 SecretKey
+  deriving (Show, Data.Structured.Show, IsString) via AsBase64 SecretKey
 
 {# fun unsafe rust_wrapper_generate_simple_self_signed as genSelfSigned
      { toBorshVar*  `[Text]'&
