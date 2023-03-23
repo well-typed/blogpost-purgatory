@@ -4,7 +4,7 @@ module Main (main) where
 
 import System.Mem
 
-import Data.Annotated (annotate)
+import Data.Annotated
 import Foreign.Rust.Serialisation.Raw
 
 import Certificate
@@ -21,7 +21,8 @@ main = do
 
     (cert, pkey) <- selfSigned ["example.com"]
     print $ cert
-    print $ annotate cert
+    print $ annotate [Just cert]
+    print $ dropAnnotation @[Maybe Certificate] $ annotate [Just cert]
     print $ certificateSubject cert
     print $ certificateSubject "MIIBVDCB+qADAgECAgkAyqwkJjeqBgAwCgYIKoZIzj0EAwIwITEfMB0GA1UEAwwWcmNnZW4gc2VsZiBzaWduZWQgY2VydDAgFw03NTAxMDEwMDAwMDBaGA80MDk2MDEwMTAwMDAwMFowITEfMB0GA1UEAwwWcmNnZW4gc2VsZiBzaWduZWQgY2VydDBZMBMGByqGSM49AgEGCCqGSM49AwEHA0IABEDhs6AFRqaPY3YL2rQzFHSU7QX4OfYBwDw7Eg1C1IJekhfb1FDN4Gx0vx6Nt/wfauFk7ngyCg6AIOktt6bIMu+jGTAXMBUGA1UdEQQOMAyCCkpvaG4gU21pdGgwCgYIKoZIzj0EAwIDSQAwRgIhAJuPoT7BOnDK48hC6Scgbd5IS1YERUh5LuYJVRdRePc0AiEAxlLn6uUvhIMlJGVOdKpH0VbRzZKIe10k6QFHvRJW9Pc="
     print $ rawSize pkey
