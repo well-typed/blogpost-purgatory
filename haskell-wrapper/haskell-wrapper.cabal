@@ -18,6 +18,7 @@ common lang
       GHC2021
   default-extensions:
       DataKinds
+      DeriveAnyClass
       DerivingStrategies
       DerivingVia
       TypeFamilies
@@ -28,16 +29,21 @@ library
       lang
   exposed-modules:
       C.Certificate
+      C.Color.Foreign
+      C.Color.Native
       C.GettingStarted
       C.Handle
       Certificate
+      Color.Foreign
       Handle
   hs-source-dirs:
       src
   build-depends:
+    , aeson
     , borsh
     , bytestring
     , foreign-rust
+    , generics-sop
     , text
   build-tool-depends:
       c2hs:c2hs

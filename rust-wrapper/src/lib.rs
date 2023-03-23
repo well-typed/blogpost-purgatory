@@ -5,12 +5,16 @@ use std::{
     sync::atomic::{AtomicUsize, Ordering},
 };
 
+use borsh::{BorshDeserialize, BorshSerialize};
 use elliptic_curve::generic_array::GenericArray;
 use haskell_ffi::{
     error::Result,
     from_haskell::{marshall_from_haskell_fixed, marshall_from_haskell_var},
     haskell_max_size::HaskellMaxSize,
-    to_haskell::{marshall_to_haskell_fixed, marshall_to_haskell_max, marshall_to_haskell_var},
+    to_haskell::{
+        marshall_result_to_haskell_var, marshall_to_haskell_fixed, marshall_to_haskell_max,
+        marshall_to_haskell_var,
+    },
     FromHaskell, HaskellSize, ToHaskell,
 };
 use p256::{FieldBytes, SecretKey};
@@ -163,6 +167,65 @@ pub extern "C" fn rust_wrapper_key_from_pem(
         Err(elliptic_curve::Error) => None,
     };
     marshall_to_haskell_max(&result, out, out_len, RW);
+}
+
+/*******************************************************************************
+  Using serde
+*******************************************************************************/
+
+#[derive(serde::Serialize, serde::Deserialize, BorshSerialize, BorshDeserialize, HaskellSize)]
+pub struct Color {
+    r: f64,
+    g: f64,
+    b: f64,
+}
+
+impl<Tag> ToHaskell<Tag> for Color {
+    fn to_haskell<W: Write>(&self, writer: &mut W, _tag: PhantomData<Tag>) -> Result<()> {
+        self.serialize(writer)?;
+        Ok(())
+    }
+}
+
+impl<Tag> FromHaskell<Tag> for Color {
+    fn from_haskell(buf: &mut &[u8], _tag: PhantomData<Tag>) -> Result<Self> {
+        let x = Color::deserialize(buf)?;
+        Ok(x)
+    }
+}
+
+#[no_mangle]
+pub extern "C" fn rust_wrapper_red(out: *mut u8, out_len: usize) {
+    let result = Color {
+        r: 1.0,
+        g: 0.0,
+        b: 0.0,
+    };
+    marshall_to_haskell_fixed(&result, out, out_len, RW);
+}
+
+#[no_mangle]
+pub extern "C" fn rust_wrapper_color_from_json(
+    json: *const u8,
+    json_len: usize,
+    out: *mut u8,
+    out_len: &mut usize,
+) {
+    let json: String = marshall_from_haskell_var(json, json_len, RW);
+    let result: core::result::Result<Color, serde_json::Error> = serde_json::from_str(&json);
+    marshall_result_to_haskell_var(&result, out, out_len, RW);
+}
+
+#[no_mangle]
+pub extern "C" fn rust_wrapper_color_to_json(
+    color: *const u8,
+    color_len: usize,
+    out: *mut u8,
+    out_len: &mut usize,
+) {
+    let color: Color = marshall_from_haskell_var(color, color_len, RW);
+    let json: String = serde_json::to_string(&color).unwrap();
+    marshall_to_haskell_var(&json, out, out_len, RW);
 }
 
 /*******************************************************************************

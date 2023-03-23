@@ -5,11 +5,14 @@ module Main (main) where
 import System.Mem
 
 import Data.Annotated
+
 import Foreign.Rust.Serialisation.Raw
 
-import Certificate
-import Handle
+import C.Color.Native qualified as Native
 import C.GettingStarted
+import Certificate
+import Color.Foreign qualified as Foreign
+import Handle
 
 main :: IO ()
 main = do
@@ -32,6 +35,13 @@ main = do
     print $ toPem pkey
     print $ fromPem (toPem pkey)
     print $ fromPem ""
+
+    putStrLn "\n# Colors\n"
+
+    print $ Native.red
+    print $ Foreign.red
+    print $ Foreign.colorToJSON $ Foreign.red
+    print $ Foreign.colorFromJSON $ Foreign.colorToJSON $ Foreign.red
 
     putStrLn "\n# Without marshalling\n"
 
