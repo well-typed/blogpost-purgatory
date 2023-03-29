@@ -16,7 +16,7 @@ serde_json     = "1.0"
 x509-cert      = "0.2"
 
 haskell-ffi.git = "https://github.com/BeFunctional/haskell-rust-ffi.git"
-haskell-ffi.rev = "b4b00f16ee383023b8a1653ed04f9d0c0c431518"
+haskell-ffi.rev = "2bf292e2e56eac8e9fb0fb2e1450cf4a4bd01274"
 
 [features]
 capi = []
