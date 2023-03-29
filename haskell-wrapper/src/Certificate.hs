@@ -7,6 +7,7 @@ module Certificate (
   , certificateSubject
   , exampleKey
   , toPem
+  , toPemExternal
   , fromPem
   ) where
 

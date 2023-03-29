@@ -5,6 +5,7 @@ module C.Certificate (
   , rustWrapperCertificateSubject
   , exampleKey
   , rustWrapperToPem
+  , toPemExternal
   , fromPem
   ) where
 
@@ -18,6 +19,7 @@ import Data.Text (Text)
 import Data.Word
 
 import Data.Structured qualified
+import Foreign.Rust.Marshall.External
 import Foreign.Rust.Marshall.Fixed
 import Foreign.Rust.Marshall.Variable
 import Foreign.Rust.Serialisation.Raw
@@ -59,6 +61,12 @@ newtype SecretKey = SecretKey (FixedSizeArray 32 Word8)
      , getVarBuffer  `Buffer Text'&
      }
   -> `()'
+#}
+
+{# fun pure unsafe rust_wrapper_key_to_pem_external as toPemExternal
+     { toBorshFixed* `SecretKey'&
+     }
+  -> `Text' fromExternalBorsh*
 #}
 
 {# fun pure unsafe rust_wrapper_key_from_pem as fromPem

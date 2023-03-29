@@ -36,6 +36,10 @@ main = do
     print $ fromPem (toPem pkey)
     print $ fromPem ""
 
+    putStrLn "\n# External buffer\n"
+
+    print $ toPemExternal pkey
+
     putStrLn "\n# Colors\n"
 
     print $ Native.red

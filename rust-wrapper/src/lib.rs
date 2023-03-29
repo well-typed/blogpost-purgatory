@@ -12,8 +12,8 @@ use haskell_ffi::{
     from_haskell::{marshall_from_haskell_fixed, marshall_from_haskell_var},
     haskell_max_size::HaskellMaxSize,
     to_haskell::{
-        marshall_result_to_haskell_var, marshall_to_haskell_fixed, marshall_to_haskell_max,
-        marshall_to_haskell_var,
+        marshall_result_to_haskell_var, marshall_to_haskell_external, marshall_to_haskell_fixed,
+        marshall_to_haskell_max, marshall_to_haskell_var,
     },
     FromHaskell, HaskellSize, ToHaskell,
 };
@@ -167,6 +167,18 @@ pub extern "C" fn rust_wrapper_key_from_pem(
         Err(elliptic_curve::Error) => None,
     };
     marshall_to_haskell_max(&result, out, out_len, RW);
+}
+
+/*******************************************************************************
+  Working with external buffers
+*******************************************************************************/
+
+#[no_mangle]
+pub extern "C" fn rust_wrapper_key_to_pem_external(key: *const u8, key_len: usize) -> *mut Vec<u8> {
+    let key: SecretKey = marshall_from_haskell_fixed(key, key_len, RW);
+    let pem = key.to_sec1_pem(Default::default()).unwrap();
+    let result: &String = pem.deref();
+    marshall_to_haskell_external(result, RW)
 }
 
 /*******************************************************************************
