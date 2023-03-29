@@ -286,8 +286,8 @@ mod tests {
 
 #[no_mangle]
 pub extern "C" fn rust_wrapper_new_handle() -> *mut Handle {
-    let handle = Box::new(new_handle());
-    Box::<Handle>::into_raw(handle)
+    let handle: Box<Handle> = Box::new(new_handle());
+    Box::into_raw(handle)
 }
 
 #[no_mangle]
@@ -298,5 +298,5 @@ pub extern "C" fn rust_wrapper_handle_id(handle: *mut Handle) -> usize {
 
 #[no_mangle]
 pub extern "C" fn rust_wrapper_free_handle(handle: *mut Handle) {
-    let _handle = unsafe { Box::from_raw(handle) };
+    let _handle: Box<Handle> = unsafe { Box::from_raw(handle) };
 }
